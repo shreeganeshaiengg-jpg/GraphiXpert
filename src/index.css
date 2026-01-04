@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #ff5f1f;
+  --color-primary-glow: rgba(255, 95, 31, 0.5);
+  --color-bg-dark: #0a0a0a;
+  --color-bg-card: #141414;
+}
+
+:root {
+  color-scheme: dark;
+  --primary: #ff5f1f;
+  /* Keep for custom inline styles if needed */
+  font-family: 'Nunito', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-bg-dark text-white min-h-screen overflow-x-hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-bg-dark;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-zinc-800 rounded-full hover:bg-primary transition-colors;
+}
+
+/* Animations & Effects */
+.neon-text {
+  color: var(--color-primary);
+  text-shadow: 0 0 10px var(--color-primary-glow), 0 0 20px var(--color-primary-glow);
+}
+
+.glass-panel {
+  @apply bg-black/40 backdrop-blur-md border border-white/10 rounded-xl;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.glass-panel:hover {
+  @apply border-primary/50;
+  box-shadow: 0 0 15px var(--color-primary-glow);
+  transition: all 0.3s ease;
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #ff5f1f, #ffa07a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

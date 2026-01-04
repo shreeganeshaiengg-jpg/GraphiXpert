@@ -1,0 +1,55 @@
+{
+  "hash": "de84ac45",
+  "configHash": "120679aa",
+  "lockfileHash": "f7431676",
+  "browserHash": "484cefec",
+  "optimized": {
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "e487e39c",
+      "needsInterop": false
+    },
+    "framer-motion": {
+      "src": "../../node_modules/framer-motion/dist/es/index.mjs",
+      "file": "framer-motion.js",
+      "fileHash": "cc1bded9",
+      "needsInterop": false
+    },
+    "lucide-react": {
+      "src": "../../node_modules/lucide-react/dist/esm/lucide-react.js",
+      "file": "lucide-react.js",
+      "fileHash": "df7218ff",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "e95868d8",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "e2e47484",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "e1de7e6b",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-R3E4LXVO": {
+      "file": "chunk-R3E4LXVO.js"
+    },
+    "chunk-P6RTVJOB": {
+      "file": "chunk-P6RTVJOB.js"
+    },
+    "chunk-G3PMV62Z": {
+      "file": "chunk-G3PMV62Z.js"
+    }
+  }
+}

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useContent } from '../context/ContentContext';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Edit, Trash2, X, Check, Search, LayoutDashboard } from 'lucide-react';
+import { Plus, Edit, Trash2, X, LayoutDashboard } from 'lucide-react';
 
 const Modal = ({ isOpen, onClose, title, children }) => {
     if (!isOpen) return null;
@@ -70,7 +70,6 @@ const SectionEditor = ({ sectionKey, title, fields }) => {
             alert('Upload failed');
         }
     };
-
     return (
         <div className="mb-12 bg-bg-card/50 p-6 rounded-2xl border border-white/5">
             <div className="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">

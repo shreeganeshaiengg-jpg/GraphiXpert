@@ -10,13 +10,13 @@ const API_URL = 'http://localhost:5000/api';
 
 const initialData = {
     services: [
-        { id: 1, title: 'Web Development', description: 'Modern, responsive websites built with React and Node.js.', icon: 'Code' },
-        { id: 2, title: 'App Development', description: 'Cross-platform mobile apps using Flutter and React Native.', icon: 'Smartphone' },
-        { id: 3, title: 'UI/UX Design', description: 'User-centric design with focuses on usability and aesthetics.', icon: 'PenTool' },
+        { id: 1, title: 'Web Development', description: 'Modern, responsive websites built with React and Node.js.', icon: 'Code', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80' },
+        { id: 2, title: 'App Development', description: 'Cross-platform mobile apps using Flutter and React Native.', icon: 'Smartphone', image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80' },
+        { id: 3, title: 'UI/UX Design', description: 'User-centric design with focuses on usability and aesthetics.', icon: 'PenTool', image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80' },
     ],
     projects: [
-        { id: 101, title: 'E-Commerce Platform', description: 'A full-featured online store with payment gateway.', category: 'Web' },
-        { id: 102, title: 'Health Tracker', description: 'Mobile application for tracking fitness and diet.', category: 'App' },
+        { id: 101, title: 'E-Commerce Platform', description: 'A full-featured online store with payment gateway.', category: 'Web', image: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80' },
+        { id: 102, title: 'Health Tracker', description: 'Mobile application for tracking fitness and diet.', category: 'App', image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80' },
     ],
     courses: [
         { id: 201, title: 'Python Mastery', description: 'Zero to Hero in Python programming.', duration: '8 Weeks', price: '₹3,999' },

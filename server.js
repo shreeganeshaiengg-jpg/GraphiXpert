@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-const MONGO_URI = "mongodb+srv://cinisecretstamil_db_user:AEWTsIydworhOwSG@cluster0.pep6pnt.mongodb.net/graphixpert?retryWrites=true&w=majority&tls=true";
+const MONGO_URI = "mongodb+srv://cinisecretstamil_db_user:3M.%40aFD5A9LC-vb@cluster0.pep6pnt.mongodb.net/graphixpert?appName=Cluster0";
 
 mongoose.connect(MONGO_URI, {
     serverSelectionTimeoutMS: 30000,
@@ -44,8 +44,6 @@ mongoose.connection.on('disconnected', () => {
 import multer from 'multer';
 import fs from 'fs';
 
-// ... (imports remain)
-
 // Ensure uploads directory exists
 const uploadDir = path.join(process.cwd(), 'uploads');
 if (!fs.existsSync(uploadDir)) {
@@ -62,8 +60,6 @@ const storage = multer.diskStorage({
     }
 });
 const upload = multer({ storage: storage });
-
-// ... (rest of server)
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
@@ -89,9 +85,17 @@ const CourseSchema = new mongoose.Schema({
     price: String,
 });
 
+const EnrollmentSchema = new mongoose.Schema({
+    name: String,
+    mobile: String,
+    courseTitle: String,
+    date: { type: Date, default: Date.now }
+});
+
 const Service = mongoose.model('Service', ServiceSchema);
 const Project = mongoose.model('Project', ProjectSchema);
 const Course = mongoose.model('Course', CourseSchema);
+const Enrollment = mongoose.model('Enrollment', EnrollmentSchema);
 
 // Routes
 
@@ -103,10 +107,6 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
     const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
     res.json({ imageUrl });
 });
-
-// Routes
-
-// Get All Content
 
 // Get All Content
 app.get('/api/content', async (req, res) => {
@@ -170,47 +170,6 @@ app.delete('/api/content/:section/:id', async (req, res) => {
     }
 });
 
-// Seed Database Route (Optional, for initial setup)
-app.post('/api/seed', async (req, res) => {
-    try {
-        await Service.deleteMany({});
-        await Project.deleteMany({});
-        await Course.deleteMany({});
-
-        await Service.create([
-            { title: 'Web Development', description: 'Modern, responsive websites built with React and Node.js.', icon: 'Code' },
-            { title: 'App Development', description: 'Cross-platform mobile apps using Flutter and React Native.', icon: 'Smartphone' },
-            { title: 'UI/UX Design', description: 'User-centric design with focuses on usability and aesthetics.', icon: 'PenTool' },
-        ]);
-
-        await Project.create([
-            { title: 'E-Commerce Platform', description: 'A full-featured online store with payment gateway.', category: 'Web' },
-            { title: 'Health Tracker', description: 'Mobile application for tracking fitness and diet.', category: 'App' },
-        ]);
-
-        await Course.create([
-            { title: 'Python Mastery', description: 'Zero to Hero in Python programming.', duration: '8 Weeks', price: '₹3,999' },
-            { title: 'Java Enterprise', description: 'Build scalable enterprise applications.', duration: '12 Weeks', price: '₹4,999' },
-            { title: 'Full Stack MERN', description: 'Master MongoDB, Express, React, and Node.', duration: '16 Weeks', price: '₹6,999' },
-        ]);
-
-        res.json({ message: "Database Seeded" });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-const EnrollmentSchema = new mongoose.Schema({
-    name: String,
-    mobile: String,
-    courseTitle: String,
-    date: { type: Date, default: Date.now }
-});
-
-const Enrollment = mongoose.model('Enrollment', EnrollmentSchema);
-
-// ... (other routes)
-
 // Enrollment Routes
 
 // Get All Enrollments
@@ -239,6 +198,36 @@ app.delete('/api/enrollments/:id', async (req, res) => {
     try {
         await Enrollment.findByIdAndDelete(req.params.id);
         res.json({ message: 'Deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Seed Database Route (Optional, for initial setup)
+app.post('/api/seed', async (req, res) => {
+    try {
+        await Service.deleteMany({});
+        await Project.deleteMany({});
+        await Course.deleteMany({});
+
+        await Service.create([
+            { title: 'Web Development', description: 'Modern, responsive websites built with React and Node.js.', icon: 'Code', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80' },
+            { title: 'App Development', description: 'Cross-platform mobile apps using Flutter and React Native.', icon: 'Smartphone', image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80' },
+            { title: 'UI/UX Design', description: 'User-centric design with focuses on usability and aesthetics.', icon: 'PenTool', image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80' },
+        ]);
+
+        await Project.create([
+            { title: 'E-Commerce Platform', description: 'A full-featured online store with payment gateway.', category: 'Web', image: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80' },
+            { title: 'Health Tracker', description: 'Mobile application for tracking fitness and diet.', category: 'App', image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80' },
+        ]);
+
+        await Course.create([
+            { title: 'Python Mastery', description: 'Zero to Hero in Python programming.', duration: '8 Weeks', price: '₹3,999' },
+            { title: 'Java Enterprise', description: 'Build scalable enterprise applications.', duration: '12 Weeks', price: '₹4,999' },
+            { title: 'Full Stack MERN', description: 'Master MongoDB, Express, React, and Node.', duration: '16 Weeks', price: '₹6,999' },
+        ]);
+
+        res.json({ message: "Database Seeded" });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

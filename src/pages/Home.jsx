@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import ScrollReveal, { ZoomIn, FadeInRight } from '../components/ScrollReveal';
+import ScrollReveal, { ZoomIn } from '../components/ScrollReveal';
 import { useContent } from '../context/ContentContext';
 import * as Icons from 'lucide-react';
-import { ArrowRight, Star, Clock, DollarSign, ShieldCheck, X, Check } from 'lucide-react';
+import { ArrowRight, Star, Clock, ShieldCheck, X, Check } from 'lucide-react';
 
 const DynamicIcon = ({ name, className }) => {
     const IconComponent = Icons[name] || Icons.Code;
@@ -173,16 +173,18 @@ const Card = ({ title, description, footer, icon, image, badge, delay = 0, onEnr
                 </div>
             )}
 
-            {onEnroll && (
-                <button
-                    onClick={onEnroll}
-                    className="mt-4 w-full py-2 bg-primary/10 border border-primary/20 text-primary font-bold rounded-lg hover:bg-primary hover:text-black transition-all duration-300"
-                >
-                    Enroll Now
-                </button>
-            )}
-        </div>
-    </ScrollReveal>
+            {
+                onEnroll && (
+                    <button
+                        onClick={onEnroll}
+                        className="mt-4 w-full py-2 bg-primary/10 border border-primary/20 text-primary font-bold rounded-lg hover:bg-primary hover:text-black transition-all duration-300"
+                    >
+                        Enroll Now
+                    </button>
+                )
+            }
+        </div >
+    </ScrollReveal >
 );
 
 import pongalPopup from '../assets/pongal_popup.jpg';
@@ -272,26 +274,28 @@ const Home = () => {
                                 Browse Courses
                             </a>
                         </div>
-                    </motion.div>
-                </div>
-            </section>
+                    </motion.div >
+                </div >
+            </section >
 
             {/* Services Section */}
-            <Section title="Our Services" subtitle="Tailored solutions for your digital growth" id="services">
-                {content.services.map((service, idx) => (
-                    <Card
-                        key={service.id}
-                        title={service.title}
-                        description={service.description}
-                        icon={service.icon}
-                        image={service.image}
-                        delay={idx * 0.1}
-                    />
-                ))}
-            </Section>
+            < Section title="Our Services" subtitle="Tailored solutions for your digital growth" id="services" >
+                {
+                    content.services.map((service, idx) => (
+                        <Card
+                            key={service.id}
+                            title={service.title}
+                            description={service.description}
+                            icon={service.icon}
+                            image={service.image}
+                            delay={idx * 0.1}
+                        />
+                    ))
+                }
+            </Section >
 
             {/* Projects Section */}
-            <div className="bg-bg-card/30">
+            < div className="bg-bg-card/30" >
                 <Section title="Featured Projects" subtitle="A showcase of our best work" id="projects">
                     {content.projects.map((project, idx) => (
                         <Card
@@ -306,7 +310,7 @@ const Home = () => {
                     ))}
                     {content.projects.length === 0 && <p className="text-gray-500 text-center col-span-3">No projects yet.</p>}
                 </Section>
-            </div>
+            </div >
 
             {/* Courses Section */}
             <Section title="Premium Courses" subtitle="Master the skills of tomorrow" id="courses">

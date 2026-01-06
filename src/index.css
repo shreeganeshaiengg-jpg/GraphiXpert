@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+/* Tailwind 4.0 Theme Configuration */
+/* postcss-ignore-next-line */
 @theme {
   --color-primary: #ff5f1f;
   --color-primary-glow: rgba(255, 95, 31, 0.5);

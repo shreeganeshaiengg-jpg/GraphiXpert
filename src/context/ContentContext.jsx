@@ -6,7 +6,14 @@ const ContentContext = createContext();
 export const useContent = () => useContext(ContentContext);
 
 // API Base URL
-const API_URL = 'http://localhost:5000/api';
+// API Base URL
+// Replace localhost with window.location.hostname to support mobile testing on the same network
+const getApiUrl = () => {
+    const hostname = window.location.hostname;
+    // Assuming backend runs on port 5000
+    return `http://${hostname}:5000/api`;
+};
+const API_URL = getApiUrl();
 
 const initialData = {
     services: [

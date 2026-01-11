@@ -11,6 +11,82 @@ const DynamicIcon = ({ name, className }) => {
     return <IconComponent className={className} />;
 };
 
+const ServiceDetailModal = ({ service, onClose }) => {
+    if (!service) return null;
+
+    return (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={onClose} />
+            <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                className="relative bg-[#1a1a1a] border border-white/10 rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl shadow-primary/20"
+            >
+                <div className="absolute top-4 right-4 z-20">
+                    <button onClick={onClose} className="p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors border border-white/10">
+                        <X size={24} />
+                    </button>
+                </div>
+
+                <div className="overflow-y-auto custom-scrollbar p-6 md:p-8">
+                    <div className="flex flex-col md:flex-row gap-8 mb-8">
+                        <div className="md:w-1/2">
+                            <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative group">
+                                <img src={service.image} alt={service.title} className="w-full h-64 md:h-80 object-cover" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                <div className="absolute bottom-4 left-4">
+                                    <div className="bg-primary/90 text-black text-xs font-bold px-3 py-1 rounded-full w-fit mb-2">
+                                        Featured
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="md:w-1/2 flex flex-col justify-center">
+                            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">{service.title}</h2>
+                            <div className="w-24 h-1.5 bg-primary mb-6 rounded-full" />
+                            <p className="text-gray-300 text-lg leading-relaxed">{service.description}</p>
+
+                            <div className="mt-6 flex flex-wrap gap-3">
+                                <div className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-400 flex items-center gap-2">
+                                    <Check size={16} className="text-primary" /> Professional Support
+                                </div>
+                                <div className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-400 flex items-center gap-2">
+                                    <Check size={16} className="text-primary" /> Quality Assurance
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Gallery Section */}
+                    {service.images && service.images.length > 0 && (
+                        <div className="mt-12">
+                            <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                                <span className="p-2 bg-white/5 rounded-lg text-primary"><Icons.Image size={24} /></span>
+                                Gallery & Work Samples
+                            </h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                {service.images.map((img, idx) => (
+                                    <motion.div
+                                        key={idx}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: idx * 0.05 }}
+                                        className="rounded-xl overflow-hidden border border-white/5 aspect-video group relative cursor-zoom-in"
+                                    >
+                                        <img src={img} alt={`${service.title} ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </motion.div>
+        </div>
+    );
+};
+
 const Section = ({ title, subtitle, children, id, className = "" }) => (
     <section id={id} className={`py-24 px-6 relative ${className}`}>
         <div className="max-w-7xl mx-auto relative z-10">
@@ -127,11 +203,12 @@ const EnrollModal = ({ isOpen, onClose, courseTitle }) => {
     );
 };
 
-const Card = ({ title, description, footer, icon, image, badge, delay = 0, onEnroll }) => (
+const Card = ({ title, description, footer, icon, image, badge, delay = 0, onEnroll, onClick }) => (
     <ScrollReveal
         delay={delay}
         whileHover={{ y: -5 }}
-        className="group relative bg-bg-card border border-white/5 rounded-2xl p-8 hover:border-primary/50 transition-all duration-300 shadow-lg hover:shadow-primary/10 overflow-hidden flex flex-col"
+        onClick={onClick}
+        className={`group relative bg-bg-card border border-white/5 rounded-2xl p-8 hover:border-primary/50 transition-all duration-300 shadow-lg hover:shadow-primary/10 overflow-hidden flex flex-col ${onClick ? 'cursor-pointer' : ''}`}
     >
         {/* Hover Glow Effect */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -193,6 +270,7 @@ const Home = () => {
     const { content } = useContent();
     const [isEnrollModalOpen, setIsEnrollModalOpen] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState('');
+    const [selectedService, setSelectedService] = useState(null);
     const [showPopup, setShowPopup] = useState(true);
 
     const [heroTextIndex, setHeroTextIndex] = useState(0);
@@ -212,6 +290,10 @@ const Home = () => {
     const handleEnroll = (courseTitle) => {
         setSelectedCourse(courseTitle);
         setIsEnrollModalOpen(true);
+    };
+
+    const handleServiceClick = (service) => {
+        setSelectedService(service);
     };
 
     return (
@@ -289,6 +371,7 @@ const Home = () => {
                             icon={service.icon}
                             image={service.image}
                             delay={idx * 0.1}
+                            onClick={() => handleServiceClick(service)}
                         />
                     ))
                 }
@@ -514,6 +597,12 @@ const Home = () => {
                         isOpen={isEnrollModalOpen}
                         onClose={() => setIsEnrollModalOpen(false)}
                         courseTitle={selectedCourse}
+                    />
+                )}
+                {selectedService && (
+                    <ServiceDetailModal
+                        service={selectedService}
+                        onClose={() => setSelectedService(null)}
                     />
                 )}
                 {showPopup && (

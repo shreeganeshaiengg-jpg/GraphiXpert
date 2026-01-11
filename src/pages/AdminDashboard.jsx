@@ -68,7 +68,8 @@ const SectionEditor = ({ sectionKey, title, fields }) => {
         uploadData.append('image', file);
 
         try {
-            const res = await axios.post('http://localhost:5000/api/upload', uploadData, {
+            const hostname = window.location.hostname;
+            const res = await axios.post(`http://${hostname}:5000/api/upload`, uploadData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             setFormData(prev => ({ ...prev, image: res.data.imageUrl }));
@@ -93,7 +94,8 @@ const SectionEditor = ({ sectionKey, title, fields }) => {
         });
 
         try {
-            const res = await axios.post('http://localhost:5000/api/upload-multiple', uploadData, {
+            const hostname = window.location.hostname;
+            const res = await axios.post(`http://${hostname}:5000/api/upload-multiple`, uploadData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             setFormData(prev => ({ ...prev, images: [...(prev.images || []), ...res.data.imageUrls] }));

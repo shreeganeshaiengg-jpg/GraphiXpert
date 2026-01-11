@@ -68,8 +68,27 @@ const SectionEditor = ({ sectionKey, title, fields }) => {
         uploadData.append('image', file);
 
         try {
-            const hostname = window.location.hostname;
-            const res = await axios.post(`http://${hostname}:5000/api/upload`, uploadData, {
+            // Logic to determine API Root
+            let apiRoot;
+            if (import.meta.env.VITE_API_URL) {
+                apiRoot = import.meta.env.VITE_API_URL;
+            } else {
+                const hostname = window.location.hostname;
+                // If on Vercel without env var, this will fail, which is expected until deployed
+                apiRoot = hostname.includes('vercel.app')
+                    ? 'https://replace-me-with-backend-url.com' // Placeholder
+                    : `http://${hostname}:5000`;
+            }
+
+            // Remove /api if it's already in the root, but here we are constructing the base
+            // The previous logic had /api in the path? 
+            // Previous: http://${hostname}:5000/api/upload
+            // So we need the base + /api/upload
+
+            // Clean up potentially trailing slash
+            const baseUrl = apiRoot.endsWith('/api') ? apiRoot : `${apiRoot}/api`;
+
+            const res = await axios.post(`${baseUrl}/upload`, uploadData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             setFormData(prev => ({ ...prev, image: res.data.imageUrl }));
@@ -94,8 +113,19 @@ const SectionEditor = ({ sectionKey, title, fields }) => {
         });
 
         try {
-            const hostname = window.location.hostname;
-            const res = await axios.post(`http://${hostname}:5000/api/upload-multiple`, uploadData, {
+            // Logic to determine API Root (Same as above)
+            let apiRoot;
+            if (import.meta.env.VITE_API_URL) {
+                apiRoot = import.meta.env.VITE_API_URL;
+            } else {
+                const hostname = window.location.hostname;
+                apiRoot = hostname.includes('vercel.app')
+                    ? 'https://replace-me-with-backend-url.com'
+                    : `http://${hostname}:5000`;
+            }
+            const baseUrl = apiRoot.endsWith('/api') ? apiRoot : `${apiRoot}/api`;
+
+            const res = await axios.post(`${baseUrl}/upload-multiple`, uploadData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             setFormData(prev => ({ ...prev, images: [...(prev.images || []), ...res.data.imageUrls] }));

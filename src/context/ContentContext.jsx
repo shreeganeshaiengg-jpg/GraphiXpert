@@ -9,8 +9,21 @@ export const useContent = () => useContext(ContentContext);
 // API Base URL
 // Replace localhost with window.location.hostname to support mobile testing on the same network
 const getApiUrl = () => {
+    // 1. If VITE_API_URL is defined (e.g. in .env or Vercel settings), use it
+    if (import.meta.env.VITE_API_URL) {
+        return import.meta.env.VITE_API_URL;
+    }
+
+    // 2. If running locally (localhost or IP), construct the local backend URL
     const hostname = window.location.hostname;
-    // Assuming backend runs on port 5000
+    // Check if we are on a public domain (like vercel.app) but no API_URL is set
+    if (hostname.includes('vercel.app')) {
+        console.warn('⚠️ Running on Vercel but VITE_API_URL is not set. Backend calls will fail unless configured.');
+        // Fallback for user: prevent breaking, but it won't connect to localhost
+        return 'https://replace-me-with-backend-url.com/api';
+    }
+
+    // 3. Keep local development working (dynamic IP)
     return `http://${hostname}:5000/api`;
 };
 const API_URL = getApiUrl();

@@ -15,7 +15,8 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-const MONGO_URI = "mongodb+srv://cinisecretstamil_db_user:3M.%40aFD5A9LC-vb@cluster0.pep6pnt.mongodb.net/graphixpert?appName=Cluster0";
+// MongoDB Connection
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://cinisecretstamil_db_user:3M.%40aFD5A9LC-vb@cluster0.pep6pnt.mongodb.net/graphixpert?appName=Cluster0";
 
 mongoose.connect(MONGO_URI, {
     serverSelectionTimeoutMS: 30000,
@@ -289,6 +290,36 @@ app.post('/api/seed', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+// Global Error Handlers to prevent crash
+process.on('uncaughtException', (err) => {
+    console.error('UNCAUGHT EXCEPTION:', err);
+    // Keep running
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('UNHANDLED REJECTION:', reason);
+    // Keep running
+});
+
+// Helper to get local IP
+import os from 'os';
+function getLocalIp() {
+    const interfaces = os.networkInterfaces();
+    for (const name of Object.keys(interfaces)) {
+        for (const iface of interfaces[name]) {
+            if (iface.family === 'IPv4' && !iface.internal) {
+                return iface.address;
+            }
+        }
+    }
+    return 'localhost';
+}
+
+const localIp = getLocalIp();
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n🚀 Server running!`);
+    console.log(`> Local:   http://localhost:${PORT}`);
+    console.log(`> Network: http://${localIp}:${PORT}`);
+    console.log(`\n⚠️  If testing on mobile, use the 'Network' URL for the API.`);
 });

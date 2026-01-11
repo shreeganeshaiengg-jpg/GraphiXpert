@@ -13,11 +13,15 @@ const Modal = ({ isOpen, onClose, title, children }) => {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="glass-panel w-full max-w-lg p-6 relative bg-[#1a1a1a] border border-white/10 shadow-2xl shadow-primary/20"
+                className="glass-panel w-full max-w-lg flex flex-col max-h-[90vh] bg-[#1a1a1a] border border-white/10 shadow-2xl shadow-primary/20 overflow-hidden"
             >
-                <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white transition"><X /></button>
-                <h3 className="text-2xl font-bold mb-6 text-primary">{title}</h3>
-                {children}
+                <div className="flex justify-between items-center p-6 border-b border-white/10 bg-[#1a1a1a] z-10 shrink-0">
+                    <h3 className="text-2xl font-bold text-primary">{title}</h3>
+                    <button onClick={onClose} className="text-gray-400 hover:text-white transition rounded-full p-1 hover:bg-white/10"><X /></button>
+                </div>
+                <div className="p-6 overflow-y-auto custom-scrollbar">
+                    {children}
+                </div>
             </motion.div>
         </div>
     );
@@ -38,7 +42,10 @@ const SectionEditor = ({ sectionKey, title, fields }) => {
     const handleAdd = () => {
         setEditingItem(null);
         const initialData = {};
-        fields.forEach(f => initialData[f] = '');
+        fields.forEach(f => {
+            if (f === 'images') initialData[f] = [];
+            else initialData[f] = '';
+        });
         setFormData(initialData);
         setIsModalOpen(true);
     };
@@ -69,6 +76,38 @@ const SectionEditor = ({ sectionKey, title, fields }) => {
             console.error('Upload failed', err);
             alert('Upload failed');
         }
+    };
+
+    const handleMultiFileUpload = async (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length === 0) return;
+
+        if ((formData.images?.length || 0) + files.length > 10) {
+            alert('You can only upload up to 10 images');
+            return;
+        }
+
+        const uploadData = new FormData();
+        files.forEach(file => {
+            uploadData.append('images', file);
+        });
+
+        try {
+            const res = await axios.post('http://localhost:5000/api/upload-multiple', uploadData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            setFormData(prev => ({ ...prev, images: [...(prev.images || []), ...res.data.imageUrls] }));
+        } catch (err) {
+            console.error('Upload failed', err);
+            alert('Upload failed');
+        }
+    };
+
+    const removeImage = (indexToRemove) => {
+        setFormData(prev => ({
+            ...prev,
+            images: prev.images.filter((_, index) => index !== indexToRemove)
+        }));
     };
     return (
         <div className="mb-12 bg-bg-card/50 p-6 rounded-2xl border border-white/5">
@@ -140,6 +179,31 @@ const SectionEditor = ({ sectionKey, title, fields }) => {
                                             {formData.image && (
                                                 <img src={formData.image} alt="Preview" className="w-full h-32 object-cover rounded-lg border border-white/10" />
                                             )}
+                                        </div>
+                                    ) : field === 'images' ? (
+                                        <div className="flex flex-col gap-2">
+                                            <input
+                                                type="file"
+                                                multiple
+                                                accept="image/*"
+                                                onChange={handleMultiFileUpload}
+                                                className="w-full bg-black/50 border border-gray-700 rounded-lg p-2 text-white"
+                                            />
+                                            <div className="grid grid-cols-4 gap-2 mt-2">
+                                                {(formData.images || []).map((img, index) => (
+                                                    <div key={index} className="relative group">
+                                                        <img src={img} alt={`Gallery ${index}`} className="w-full h-20 object-cover rounded-lg border border-white/10" />
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => removeImage(index)}
+                                                            className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition shadow-md"
+                                                        >
+                                                            <X size={12} />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <p className="text-xs text-gray-500">Max 10 photos.</p>
                                         </div>
                                     ) : (
                                         <input
@@ -248,13 +312,13 @@ const AdminDashboard = () => {
                 <SectionEditor
                     sectionKey="services"
                     title="Services"
-                    fields={['title', 'description', 'icon', 'image']}
+                    fields={['title', 'description', 'icon', 'image', 'images']}
                 />
 
                 <SectionEditor
                     sectionKey="projects"
                     title="Projects"
-                    fields={['title', 'description', 'category', 'image']}
+                    fields={['title', 'description', 'category', 'image', 'images']}
                 />
 
                 <SectionEditor

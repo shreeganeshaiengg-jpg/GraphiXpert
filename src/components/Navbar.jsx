@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ShieldCheck, ChevronRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
+import logo from '../assets/gx_logo.jpg';
+
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
@@ -31,9 +33,7 @@ const Navbar = () => {
             <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-2 group">
-                    <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center border border-primary/50 group-hover:shadow-[0_0_15px_var(--primary)] transition-all">
-                        <span className="text-2xl font-bold text-primary">G</span>
-                    </div>
+                    <img src={logo} alt="GraphiXpert Logo" className="h-10 w-auto object-contain rounded-lg group-hover:scale-105 transition-transform duration-300" />
                     <span className="text-2xl font-bold tracking-wider text-white group-hover:text-primary transition-colors">
                         GRAPHIX<span className="text-primary">PERT</span>
                     </span>

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal, { ZoomIn } from '../components/ScrollReveal';
 import { useContent } from '../context/ContentContext';
 import * as Icons from 'lucide-react';
-import { ArrowRight, Star, Clock, ShieldCheck, X, Check } from 'lucide-react';
+import { ArrowRight, Star, Clock, ShieldCheck, X, Check, Twitter, Linkedin, Instagram } from 'lucide-react';
 
 const DynamicIcon = ({ name, className }) => {
     const IconComponent = Icons[name] || Icons.Code;
@@ -477,11 +477,29 @@ const Home = () => {
                         <p className="text-gray-500 text-sm">Empowering creators worldwide.</p>
                     </ScrollReveal>
                     <ScrollReveal delay={0.1} className="flex gap-8 items-center">
-                        <a href="#" className="text-gray-500 hover:text-white transition">Twitter</a>
-                        <a href="#" className="text-gray-500 hover:text-white transition">LinkedIn</a>
-                        <a href="#" className="text-gray-500 hover:text-white transition">Instagram</a>
-                        <Link to="/admin/login" className="flex items-center gap-1 text-gray-500 hover:text-primary transition-colors text-sm">
-                            <ShieldCheck size={14} /> Admin
+                        <a href="#" className="flex flex-col items-center gap-2 group">
+                            <div className="p-2 bg-white/5 rounded-full group-hover:bg-white/10 transition-colors">
+                                <Twitter size={20} className="text-[#1DA1F2]" />
+                            </div>
+                            <span className="text-gray-500 text-xs group-hover:text-white transition-colors">Twitter</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/graphixpert-xpert-b79049398" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 group">
+                            <div className="p-2 bg-white/5 rounded-full group-hover:bg-white/10 transition-colors">
+                                <Linkedin size={20} className="text-[#0077B5]" />
+                            </div>
+                            <span className="text-gray-500 text-xs group-hover:text-white transition-colors">LinkedIn</span>
+                        </a>
+                        <a href="https://instagram.com/graphixpert18" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 group">
+                            <div className="p-2 bg-white/5 rounded-full group-hover:bg-white/10 transition-colors">
+                                <Instagram size={20} className="text-[#E1306C]" />
+                            </div>
+                            <span className="text-gray-500 text-xs group-hover:text-white transition-colors">Instagram</span>
+                        </a>
+                        <Link to="/admin/login" className="flex flex-col items-center gap-2 group">
+                            <div className="p-2 bg-white/5 rounded-full group-hover:bg-white/10 transition-colors">
+                                <ShieldCheck size={20} className="text-primary" />
+                            </div>
+                            <span className="text-gray-500 text-xs group-hover:text-primary transition-colors">Admin</span>
                         </Link>
                     </ScrollReveal>
                     <ScrollReveal delay={0.2}>
@@ -509,15 +527,17 @@ const Home = () => {
                             initial={{ scale: 0.5, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.5, opacity: 0 }}
-                            className="relative max-w-lg w-full bg-white rounded-2xl overflow-hidden shadow-2xl shadow-primary/20"
+                            className="relative max-w-lg w-full bg-white rounded-2xl shadow-2xl shadow-primary/20 max-h-[90vh] flex flex-col"
                         >
                             <button
                                 onClick={() => setShowPopup(false)}
-                                className="absolute top-2 right-2 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors z-10"
+                                className="absolute top-2 right-2 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors z-20"
                             >
                                 <X size={20} />
                             </button>
-                            <img src={pongalPopup} alt="Happy Pongal" className="w-full h-auto object-cover" />
+                            <div className="overflow-y-auto custom-scrollbar rounded-2xl">
+                                <img src={pongalPopup} alt="Happy Pongal" className="w-full h-auto object-cover" />
+                            </div>
                         </motion.div>
                     </motion.div>
                 )}

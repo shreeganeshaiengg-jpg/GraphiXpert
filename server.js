@@ -69,6 +69,7 @@ const ServiceSchema = new mongoose.Schema({
     description: String,
     icon: String, // lucide icon name
     image: String,
+    images: [String] // Array of image URLs
 });
 
 const ProjectSchema = new mongoose.Schema({
@@ -76,6 +77,7 @@ const ProjectSchema = new mongoose.Schema({
     description: String,
     category: String,
     image: String,
+    images: [String] // Array of image URLs
 });
 
 const CourseSchema = new mongoose.Schema({
@@ -99,13 +101,22 @@ const Enrollment = mongoose.model('Enrollment', EnrollmentSchema);
 
 // Routes
 
-// Upload Route
+// Upload Route (Single)
 app.post('/api/upload', upload.single('image'), (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' });
     }
     const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
     res.json({ imageUrl });
+});
+
+// Upload Route (Multiple)
+app.post('/api/upload-multiple', upload.array('images', 10), (req, res) => {
+    if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ error: 'No files uploaded' });
+    }
+    const imageUrls = req.files.map(file => `${req.protocol}://${req.get('host')}/uploads/${file.filename}`);
+    res.json({ imageUrls });
 });
 
 // Get All Content
@@ -211,14 +222,59 @@ app.post('/api/seed', async (req, res) => {
         await Course.deleteMany({});
 
         await Service.create([
-            { title: 'Web Development', description: 'Modern, responsive websites built with React and Node.js.', icon: 'Code', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80' },
-            { title: 'App Development', description: 'Cross-platform mobile apps using Flutter and React Native.', icon: 'Smartphone', image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80' },
-            { title: 'UI/UX Design', description: 'User-centric design with focuses on usability and aesthetics.', icon: 'PenTool', image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80' },
+            {
+                title: 'Web Development',
+                description: 'Modern, responsive websites built with React and Node.js.',
+                icon: 'Code',
+                image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80',
+                images: [
+                    'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80',
+                    'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&q=80'
+                ]
+            },
+            {
+                title: 'App Development',
+                description: 'Cross-platform mobile apps using Flutter and React Native.',
+                icon: 'Smartphone',
+                image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80',
+                images: [
+                    'https://images.unsplash.com/photo-1526498460520-4c246339dccb?w=800&q=80',
+                    'https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?w=800&q=80'
+                ]
+            },
+            {
+                title: 'UI/UX Design',
+                description: 'User-centric design with focuses on usability and aesthetics.',
+                icon: 'PenTool',
+                image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80',
+                images: [
+                    'https://images.unsplash.com/photo-1586717791821-3f44a5638d48?w=800&q=80',
+                    'https://images.unsplash.com/photo-1545235617-9465d2a55698?w=800&q=80'
+                ]
+            },
         ]);
 
         await Project.create([
-            { title: 'E-Commerce Platform', description: 'A full-featured online store with payment gateway.', category: 'Web', image: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80' },
-            { title: 'Health Tracker', description: 'Mobile application for tracking fitness and diet.', category: 'App', image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80' },
+            {
+                title: 'E-Commerce Platform',
+                description: 'A full-featured online store with payment gateway.',
+                category: 'Web',
+                image: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80',
+                images: [
+                    'https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?w=800&q=80',
+                    'https://images.unsplash.com/photo-1556742031-c6961e8560b0?w=800&q=80'
+                ]
+            },
+            {
+                title: 'Health Tracker',
+                description: 'Mobile application for tracking fitness and diet.',
+                category: 'App',
+                image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
+                images: [
+                    'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80',
+                    'https://images.unsplash.com/photo-1574680096141-1cddd32e34e1?w=800&q=80'
+                ]
+            },
         ]);
 
         await Course.create([

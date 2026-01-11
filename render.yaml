@@ -1,0 +1,28 @@
+services:
+  # Backend specific service
+  - type: web
+    name: graphixpert-backend
+    runtime: node
+    region: singapore # Optional: chose a region appropriate for India
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        # You will be prompted to enter this value in the Render Dashboard
+        sync: false 
+
+# Optional: If you decide to move your Frontend from Vercel to Render later
+#  - type: static
+#    name: graphixpert-frontend
+#    runtime: static
+#    buildCommand: npm install && npm run build
+#    publishDir: dist
+#    envVars:
+#      - key: VITE_API_URL
+#        fromService:
+#          name: graphixpert-backend
+#          type: web
+#          property: url

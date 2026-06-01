@@ -15,17 +15,25 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-// MongoDB Connection
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://cinisecretstamil_db_user:3M.%40aFD5A9LC-vb@cluster0.pep6pnt.mongodb.net/graphixpert?appName=Cluster0";
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://cinisecretstamil_db_user:3M.%40aFD5A9LC-vb@cluster0.pep6pnt.mongodb.net/graphixpert?retryWrites=true&w=majority&appName=Cluster0";
+
+console.log('🔌 Attempting to connect to MongoDB Atlas...');
+// Only log a masked version of the URI for security
+const maskedURI = MONGO_URI.replace(/:([^@]+)@/, ':****@');
+console.log(`📡 URI: ${maskedURI}`);
 
 mongoose.connect(MONGO_URI, {
     serverSelectionTimeoutMS: 30000,
     socketTimeoutMS: 45000,
-    family: 4, // Use IPv4, skip trying IPv6
+    family: 4, // Force IPv4 to avoid DNS SRV issues with IPv6
 })
     .then(() => console.log('✅ MongoDB Connected Successfully'))
     .catch(err => {
         console.error('❌ MongoDB Connection Error:', err.message);
+        if (err.message.includes('ENOTFOUND')) {
+            console.log('💡 TIP: This is a DNS error. Please check your internet connection or use a different DNS (like Google 8.8.8.8).');
+            console.log('💡 TIP: Also ensure your IP is whitelisted in MongoDB Atlas Network Access.');
+        }
         console.log('⚠️ Server will continue running. You can add data manually via the admin panel.');
     });
 
@@ -223,36 +231,15 @@ app.post('/api/seed', async (req, res) => {
         await Course.deleteMany({});
 
         await Service.create([
-            {
-                title: 'Web Development',
-                description: 'Modern, responsive websites built with React and Node.js.',
-                icon: 'Code',
-                image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80',
-                images: [
-                    'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80',
-                    'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&q=80'
-                ]
-            },
-            {
-                title: 'App Development',
-                description: 'Cross-platform mobile apps using Flutter and React Native.',
-                icon: 'Smartphone',
-                image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80',
-                images: [
-                    'https://images.unsplash.com/photo-1526498460520-4c246339dccb?w=800&q=80',
-                    'https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?w=800&q=80'
-                ]
-            },
-            {
-                title: 'UI/UX Design',
-                description: 'User-centric design with focuses on usability and aesthetics.',
-                icon: 'PenTool',
-                image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80',
-                images: [
-                    'https://images.unsplash.com/photo-1586717791821-3f44a5638d48?w=800&q=80',
-                    'https://images.unsplash.com/photo-1545235617-9465d2a55698?w=800&q=80'
-                ]
-            },
+            { title: 'Web Development', description: 'Modern, responsive websites built with React and Node.js.', icon: 'Code', image: '/uploads/1768126336664-WEB DEVELOMENT.jpg' },
+            { title: 'App Development', description: 'Cross-platform mobile apps using Flutter and React Native.', icon: 'Smartphone', image: '/uploads/1768126353579-dk.jpg' },
+            { title: 'UI/UX Design', description: 'User-centric design focusing on usability and aesthetics.', icon: 'PenTool', image: '/uploads/1768126471825-Interface.jpg' },
+            { title: 'Graphic Design', description: 'High-end branding, logos, and visual identity that makes you stand out.', icon: 'Palette', image: '/uploads/graphic_design.png' },
+            { title: 'Video Editing', description: 'Professional cinematic editing, color grading, and motion graphics.', icon: 'Video', image: '/uploads/video_editing.png' },
+            { title: 'Digital Marketing', description: 'Data-driven social media growth, SEO, and brand awareness.', icon: 'TrendingUp', image: '/uploads/digital_marketing.png' },
+            { title: '3D Modeling', description: 'Stunning 3D models and character designs created in Blender.', icon: 'Box', image: '/uploads/3d_modeling.png' },
+            { title: 'Motion Graphics', description: 'Dynamic visuals and animations for commercials and social media.', icon: 'Layers', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80' },
+            { title: 'Content Strategy', description: 'Strategic planning and roadmap for effective digital communication.', icon: 'FileText', image: '/uploads/content_strategy.png' },
         ]);
 
         await Project.create([

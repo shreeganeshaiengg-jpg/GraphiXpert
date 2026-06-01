@@ -30,9 +30,15 @@ const API_URL = getApiUrl();
 
 const initialData = {
     services: [
-        { id: 1, title: 'Web Development', description: 'Modern, responsive websites built with React and Node.js.', icon: 'Code', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80' },
-        { id: 2, title: 'App Development', description: 'Cross-platform mobile apps using Flutter and React Native.', icon: 'Smartphone', image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80' },
-        { id: 3, title: 'UI/UX Design', description: 'User-centric design with focuses on usability and aesthetics.', icon: 'PenTool', image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80' },
+        { id: 1, title: 'Web Development', description: 'Modern, responsive websites built with React and Node.js.', icon: 'Code', image: '/uploads/1768126336664-WEB DEVELOMENT.jpg' },
+        { id: 2, title: 'App Development', description: 'Cross-platform mobile apps using Flutter and React Native.', icon: 'Smartphone', image: '/uploads/1768126353579-dk.jpg' },
+        { id: 3, title: 'UI/UX Design', description: 'User-centric design focusing on usability and aesthetics.', icon: 'PenTool', image: '/uploads/1768126471825-Interface.jpg' },
+        { id: 4, title: 'Graphic Design', description: 'High-end branding, logos, and visual identity that makes your business stand out.', icon: 'Palette', image: '/uploads/graphic_design.png' },
+        { id: 5, title: 'Video Editing', description: 'Professional cinematic editing, color grading, and motion graphics.', icon: 'Video', image: '/uploads/video_editing.png' },
+        { id: 6, title: 'Digital Marketing', description: 'Data-driven social media growth, SEO, and brand awareness.', icon: 'TrendingUp', image: '/uploads/digital_marketing.png' },
+        { id: 7, title: '3D Modeling', description: 'Stunning 3D models and character designs created in Blender.', icon: 'Box', image: '/uploads/3d_modeling.png' },
+        { id: 8, title: 'Motion Graphics', description: 'Dynamic visuals and animations for commercials and social media.', icon: 'Layers', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80' },
+        { id: 9, title: 'Content Strategy', description: 'Strategic planning and roadmap for effective digital communication.', icon: 'FileText', image: '/uploads/content_strategy.png' },
     ],
     projects: [
         { id: 101, title: 'E-Commerce Platform', description: 'A full-featured online store with payment gateway.', category: 'Web', image: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80' },

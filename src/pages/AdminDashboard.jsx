@@ -13,11 +13,11 @@ const Modal = ({ isOpen, onClose, title, children }) => {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="glass-panel w-full max-w-lg flex flex-col max-h-[90vh] bg-[#1a1a1a] border border-white/10 shadow-2xl shadow-primary/20 overflow-hidden"
+                className="glass-panel w-full max-w-lg flex flex-col max-h-[90vh] bg-bg-card border border-border-main shadow-2xl shadow-primary/20 overflow-hidden"
             >
-                <div className="flex justify-between items-center p-6 border-b border-white/10 bg-[#1a1a1a] z-10 shrink-0">
+                <div className="flex justify-between items-center p-6 border-b border-border-main bg-bg-card z-10 shrink-0">
                     <h3 className="text-2xl font-bold text-primary">{title}</h3>
-                    <button onClick={onClose} className="text-gray-400 hover:text-white transition rounded-full p-1 hover:bg-white/10"><X /></button>
+                    <button onClick={onClose} className="text-text-muted hover:text-text-primary transition rounded-full p-1 hover:bg-text-primary/10"><X /></button>
                 </div>
                 <div className="p-6 overflow-y-auto custom-scrollbar">
                     {children}
@@ -142,9 +142,9 @@ const SectionEditor = ({ sectionKey, title, fields }) => {
         }));
     };
     return (
-        <div className="mb-12 bg-bg-card/50 p-6 rounded-2xl border border-white/5">
-            <div className="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
-                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+        <div className="mb-12 bg-bg-card/50 p-6 rounded-2xl border border-border-main">
+            <div className="flex justify-between items-center mb-6 border-b border-border-main pb-4">
+                <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
                     <span className="w-2 h-8 bg-primary rounded-full"></span>
                     {title}
                 </h2>
@@ -158,29 +158,29 @@ const SectionEditor = ({ sectionKey, title, fields }) => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {content[sectionKey].map((item) => (
-                    <div key={item.id} className="bg-black/40 p-5 rounded-xl border border-white/5 hover:border-primary/50 transition group relative overflow-hidden">
+                    <div key={item.id} className="bg-bg-main/40 p-5 rounded-xl border border-border-main hover:border-primary/50 transition group relative overflow-hidden">
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-transparent opacity-50"></div>
 
-                        <h4 className="font-bold text-lg mb-2 text-white group-hover:text-primary transition-colors">{item.title}</h4>
-                        <div className="text-sm text-gray-400 mb-6 space-y-1">
+                        <h4 className="font-bold text-lg mb-2 text-text-primary group-hover:text-primary transition-colors">{item.title}</h4>
+                        <div className="text-sm text-text-secondary mb-6 space-y-1">
                             {Object.keys(item).map(key => {
                                 if (key === 'id' || key === 'title') return null;
                                 return (
                                     <div key={key} className="flex gap-2">
-                                        <span className="capitalize text-gray-600 min-w-[80px]">{key}:</span>
-                                        <span className="text-gray-300 truncate">{item[key]}</span>
+                                        <span className="capitalize text-text-muted min-w-[80px]">{key}:</span>
+                                        <span className="text-text-secondary truncate">{item[key]}</span>
                                     </div>
                                 );
                             })}
                         </div>
 
-                        <div className="flex justify-end gap-2 mt-auto border-t border-white/5 pt-4">
-                            <button onClick={() => handleEdit(item)} className="p-2 bg-white/5 rounded-lg hover:bg-primary hover:text-black transition text-gray-300 group-hover:bg-white/10">
+                        <div className="flex justify-end gap-2 mt-auto border-t border-border-main pt-4">
+                            <button onClick={() => handleEdit(item)} className="p-2 bg-text-primary/5 rounded-lg hover:bg-primary hover:text-bg-card transition text-text-secondary group-hover:bg-text-primary/10">
                                 <Edit size={16} />
                             </button>
                             <button
                                 onClick={() => { if (window.confirm('Delete this item?')) deleteItem(sectionKey, item.id); }}
-                                className="p-2 bg-white/5 rounded-lg hover:bg-red-500 hover:text-white transition text-gray-300 group-hover:bg-white/10"
+                                className="p-2 bg-text-primary/5 rounded-lg hover:bg-red-500 hover:text-white transition text-text-secondary group-hover:bg-text-primary/10"
                             >
                                 <Trash2 size={16} />
                             </button>
@@ -188,8 +188,8 @@ const SectionEditor = ({ sectionKey, title, fields }) => {
                     </div>
                 ))}
                 {content[sectionKey].length === 0 && (
-                    <div className="col-span-3 py-8 text-center border-2 border-dashed border-gray-800 rounded-xl">
-                        <p className="text-gray-500 italic">No items yet. Click "Add New" to get started.</p>
+                    <div className="col-span-3 py-8 text-center border-2 border-dashed border-border-main rounded-xl">
+                        <p className="text-text-muted italic">No items yet. Click "Add New" to get started.</p>
                     </div>
                 )}
             </div>
@@ -200,16 +200,16 @@ const SectionEditor = ({ sectionKey, title, fields }) => {
                         <form onSubmit={handleSubmit} className="space-y-4">
                             {fields.map(field => (
                                 <div key={field}>
-                                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1 tracking-wider">{field}</label>
+                                    <label className="block text-xs font-bold text-text-muted uppercase mb-1 tracking-wider">{field}</label>
                                     {field === 'image' ? (
                                         <div className="flex flex-col gap-2">
                                             <input
                                                 type="file"
                                                 onChange={handleFileUpload}
-                                                className="w-full bg-black/50 border border-gray-700 rounded-lg p-2 text-white"
+                                                className="w-full bg-bg-main border border-border-main rounded-lg p-2 text-text-primary"
                                             />
                                             {formData.image && (
-                                                <img src={formData.image} alt="Preview" className="w-full h-32 object-cover rounded-lg border border-white/10" />
+                                                <img src={formData.image} alt="Preview" className="w-full h-32 object-cover rounded-lg border border-border-main" />
                                             )}
                                         </div>
                                     ) : field === 'images' ? (
@@ -219,12 +219,12 @@ const SectionEditor = ({ sectionKey, title, fields }) => {
                                                 multiple
                                                 accept="image/*"
                                                 onChange={handleMultiFileUpload}
-                                                className="w-full bg-black/50 border border-gray-700 rounded-lg p-2 text-white"
+                                                className="w-full bg-bg-main border border-border-main rounded-lg p-2 text-text-primary"
                                             />
                                             <div className="grid grid-cols-4 gap-2 mt-2">
                                                 {(formData.images || []).map((img, index) => (
                                                     <div key={index} className="relative group">
-                                                        <img src={img} alt={`Gallery ${index}`} className="w-full h-20 object-cover rounded-lg border border-white/10" />
+                                                        <img src={img} alt={`Gallery ${index}`} className="w-full h-20 object-cover rounded-lg border border-border-main" />
                                                         <button
                                                             type="button"
                                                             onClick={() => removeImage(index)}
@@ -242,14 +242,14 @@ const SectionEditor = ({ sectionKey, title, fields }) => {
                                             type="text"
                                             value={formData[field] || ''}
                                             onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
-                                            className="w-full bg-black/50 border border-gray-700 rounded-lg p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all"
+                                            className="w-full bg-bg-main border border-border-main rounded-lg p-3 text-text-primary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all"
                                             required={field !== 'image'}
                                         />
                                     )}
                                 </div>
                             ))}
-                            <div className="flex justify-end gap-3 mt-8 pt-4 border-t border-gray-800">
-                                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 text-gray-300 hover:text-white transition">Cancel</button>
+                             <div className="flex justify-end gap-3 mt-8 pt-4 border-t border-border-main">
+                                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 text-text-secondary hover:text-text-primary transition">Cancel</button>
                                 <button type="submit" className="px-6 py-2 bg-primary text-black font-bold rounded-lg hover:bg-orange-500 shadow-lg shadow-primary/20">
                                     Save Changes
                                 </button>
@@ -271,7 +271,7 @@ const AdminDashboard = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-bg-dark pt-28 pb-20 px-6">
+        <div className="min-h-screen bg-bg-main pt-28 pb-20 px-6">
             <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
                     <div className="flex items-center gap-4">
@@ -279,8 +279,8 @@ const AdminDashboard = () => {
                             <LayoutDashboard size={32} />
                         </div>
                         <div>
-                            <h1 className="text-4xl font-bold text-white mb-2">Admin Dashboard</h1>
-                            <p className="text-gray-400">Manage and oversee your website content efficiently.</p>
+                            <h1 className="text-4xl font-bold text-text-primary mb-2">Admin Dashboard</h1>
+                            <p className="text-text-secondary">Manage and oversee your website content efficiently.</p>
                         </div>
                     </div>
                     <button
@@ -292,9 +292,9 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Enrollment Notice Board */}
-                <div className="mb-12 bg-bg-card/50 p-6 rounded-2xl border border-white/5">
-                    <div className="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
-                        <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <div className="mb-12 bg-bg-card/50 p-6 rounded-2xl border border-border-main">
+                    <div className="flex justify-between items-center mb-6 border-b border-border-main pb-4">
+                        <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
                             <span className="w-2 h-8 bg-purple-500 rounded-full"></span>
                             Notice Board - Enrollments
                         </h2>
@@ -303,7 +303,7 @@ const AdminDashboard = () => {
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="text-gray-400 border-b border-white/10">
+                                <tr className="text-text-muted border-b border-border-main">
                                     <th className="p-4 font-semibold">Name</th>
                                     <th className="p-4 font-semibold">Mobile</th>
                                     <th className="p-4 font-semibold">Course</th>
@@ -312,13 +312,13 @@ const AdminDashboard = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {enrollments.length > 0 ? (
+                                 {enrollments.length > 0 ? (
                                     enrollments.map((enr) => (
-                                        <tr key={enr.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                                            <td className="p-4 text-white font-medium">{enr.name}</td>
-                                            <td className="p-4 text-gray-300">{enr.mobile}</td>
+                                        <tr key={enr.id} className="border-b border-border-main hover:bg-text-primary/5 transition-colors">
+                                            <td className="p-4 text-text-primary font-medium">{enr.name}</td>
+                                            <td className="p-4 text-text-secondary">{enr.mobile}</td>
                                             <td className="p-4 text-primary">{enr.courseTitle}</td>
-                                            <td className="p-4 text-gray-500 text-sm">{new Date(enr.date).toLocaleDateString()}</td>
+                                            <td className="p-4 text-text-muted text-sm">{new Date(enr.date).toLocaleDateString()}</td>
                                             <td className="p-4 text-right">
                                                 <button
                                                     onClick={() => { if (window.confirm('Delete this enrollment?')) deleteEnrollment(enr.id); }}
@@ -329,9 +329,9 @@ const AdminDashboard = () => {
                                             </td>
                                         </tr>
                                     ))
-                                ) : (
+                                 ) : (
                                     <tr>
-                                        <td colSpan="5" className="p-8 text-center text-gray-500 italic">
+                                        <td colSpan="5" className="p-8 text-center text-text-muted italic">
                                             No enrollments yet.
                                         </td>
                                     </tr>

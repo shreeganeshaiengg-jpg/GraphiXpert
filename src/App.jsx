@@ -12,7 +12,7 @@ function App() {
   // keeping it for navigation back to home.
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[var(--bg-main)] text-[var(--text-primary)]">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

@@ -36,7 +36,10 @@ const BASE_URL = 'http://localhost:5000/uploads';
 const seed = async () => {
     try {
         console.log('Connecting to MongoDB...');
-        await mongoose.connect(MONGO_URI);
+        await mongoose.connect(MONGO_URI, {
+            serverSelectionTimeoutMS: 30000,
+            family: 4,
+        });
         console.log('Connected to Atlas.');
 
         console.log('Clearing old data...');
@@ -46,31 +49,15 @@ const seed = async () => {
 
         console.log('Seeding Services...');
         await Service.create([
-            {
-                title: 'Web Development',
-                description: 'Modern, responsive websites built with React and Node.js.',
-                icon: 'Code',
-                image: `${BASE_URL}/1768126336664-WEB DEVELOMENT.jpg`,
-                images: []
-            },
-            {
-                title: 'App Development',
-                description: 'Cross-platform mobile apps using Flutter and React Native.',
-                icon: 'Smartphone',
-                image: `${BASE_URL}/1768126353579-dk.jpg`,
-                images: [
-                    `${BASE_URL}/1768126353579-dk2.jpg`,
-                    `${BASE_URL}/1768126353579-dk3.jpg`,
-                    `${BASE_URL}/1768126353581-dk4.jpg`
-                ]
-            },
-            {
-                title: 'UI/UX Design',
-                description: 'User-centric design with focuses on usability and aesthetics.',
-                icon: 'PenTool',
-                image: `${BASE_URL}/1768126471825-Interface.jpg`,
-                images: []
-            },
+            { title: 'Web Development', description: 'Modern, responsive websites built with React and Node.js.', icon: 'Code', image: `${BASE_URL}/1768126336664-WEB DEVELOMENT.jpg` },
+            { title: 'App Development', description: 'Cross-platform mobile apps using Flutter and React Native.', icon: 'Smartphone', image: `${BASE_URL}/1768126353579-dk.jpg` },
+            { title: 'UI/UX Design', description: 'User-centric design focusing on usability and aesthetics.', icon: 'PenTool', image: `${BASE_URL}/1768126471825-Interface.jpg` },
+            { title: 'Graphic Design', description: 'High-end branding, logos, and visual identity that makes you stand out.', icon: 'Palette', image: `${BASE_URL}/graphic_design.png` },
+            { title: 'Video Editing', description: 'Professional cinematic editing, color grading, and motion graphics.', icon: 'Video', image: `${BASE_URL}/video_editing.png` },
+            { title: 'Digital Marketing', description: 'Data-driven social media growth, SEO, and brand awareness.', icon: 'TrendingUp', image: `${BASE_URL}/digital_marketing.png` },
+            { title: '3D Modeling', description: 'Stunning 3D models and character designs created in Blender.', icon: 'Box', image: `${BASE_URL}/3d_modeling.png` },
+            { title: 'Motion Graphics', description: 'Dynamic visuals and animations for commercials and social media.', icon: 'Layers', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80' },
+            { title: 'Content Strategy', description: 'Strategic planning and roadmap for effective digital communication.', icon: 'FileText', image: `${BASE_URL}/content_strategy.png` },
         ]);
 
         console.log('Seeding Projects...');
